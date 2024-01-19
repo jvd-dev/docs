@@ -3,7 +3,7 @@
   "name": "Starter Kit",
   "logo": {
     "dark": "/logo/Zema.png",
-    "light": "/logo/light.svg"
+    "light": "/logo/logo.png"
   },
   "favicon": "/favicon.svg",
   "colors": {
@@ -39,7 +39,7 @@
     },
     {
       "name": "Suporte",
-      "icon": "slack",
+      "icon": "teams",
       "url": "https://mintlify.com/community"
     },
     {
