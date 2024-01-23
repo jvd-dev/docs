@@ -18,12 +18,12 @@
   "topbarLinks": [
     {
       "name": "Support",
+      "icon": "whatsapp",
       "url": "mailto:hi@mintlify.com"
     }
   ],
   "topbarCtaButton": {
     "name": "Dashboard",
-    "icon": "whatsapp",
     "url": "https://dashboard.mintlify.com"
   },
   "tabs": [
