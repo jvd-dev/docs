@@ -15,17 +15,7 @@
       "to": "#114b8c"
     }
   },
-  "topbarLinks": [
-    {
-      "name": "Support",
-      "icon": "whatsapp",
-      "url": "mailto:hi@mintlify.com"
-    }
-  ],
-  "topbarCtaButton": {
-    "name": "Dashboard",
-    "url": "https://dashboard.mintlify.com"
-  },
+
   "tabs": [
     {
       "name": "Documentação APIs",
@@ -33,11 +23,6 @@
     }
   ],
   "anchors": [
-    {
-      "name": "Apresentação",
-      "icon": "book-open-cover",
-      "url": "https://mintlify.com/docs"
-    },
     {
       "name": "Suporte",
       "icon": "whatsapp",
