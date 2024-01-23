@@ -23,6 +23,7 @@
   ],
   "topbarCtaButton": {
     "name": "Dashboard",
+    "icon": "whatsapp",
     "url": "https://dashboard.mintlify.com"
   },
   "tabs": [
