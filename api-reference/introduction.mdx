@@ -1,16 +1,95 @@
 ---
-title: 'Integração APIs'
+title: 'Integrações APIs'
 description: 'Example section for showcasing API endpoints'
 ---
 
 <Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
+Para acessar as APIs da Zema Financeira, é necessário que você, nosso parceiro, tenha solicitado à equipe comercial a criação das credenciais de acesso. Essas credenciais são essenciais para garantir a segurança e a autorização adequada durante as interações com nossos serviços. Certifique-se de obter suas credenciais de acesso concedidas antes de iniciar qualquer integração ou teste com nossas APIs.
 </Note>
 
-## Welcome
+## Autenticação?
 
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
+
+A estrutura de APIs da Zema Financeira utiliza um dos métodos mais seguros de autenticação, o OAuth 2.0. Essa metodologia proporciona uma camada adicional de segurança para o usuário consumidor e para nós, garantindo maior segurança nas operações realizadas.
+
+## Como Autenticar?
+Para auntenticar é necessario as seguintes informações:
+<Steps>
+  <Step title="Usuário">
+   Nome de usuário associado à conta autorizada para acessar a API.
+  </Step>
+  <Step title="Senha">
+  Senha correspondente ao nome de usuário para autenticação.
+  </Step>
+  <Step title="client_id">
+  Identificador único atribuído ao seu aplicativo durante o registro no sistema de autenticação.
+  </Step>
+  <Step title="client_secret">
+   Chave secreta conhecida apenas pelo servidor de autenticação e pelo seu aplicativo, usada para autenticação segura.
+  </Step>
+  <Step title="grant_type">
+  Sempre será password
+  </Step>
+  <Step title="scope">
+  Corresponde ao escopo de autenticação que corresponderá a finalidade de autenticação
+  </Step>
+</Steps>
+
+Veja exemplos de requisições:
+
+<Info>https://api-autorizacao-teste-proj.zemafinanceira.com/connect/token</Info>
+
+URL API Autenticação ambiente sandbox ☝🏽
+<CodeGroup>
+
+```Auntenticação login.cs
+var client = new HttpClient();
+var request = new HttpRequestMessage
+{
+    Method = HttpMethod.Post,
+    RequestUri = new Uri("https://api-autorizacao-teste-proj.zemafinanceira.com/connect/token"),
+    Content = new FormUrlEncodedContent(new Dictionary<string, string>
+    {
+        { "grant_type", "password" },
+        { "scope", "scope-teste" },
+        { "username", "user-teste" },
+        { "password", "senha-teste" },
+        { "client_id", "client-id-teste" },
+        { "client_secret", "client-secret-teste" },
+    }),
+};
+using (var response = await client.SendAsync(request))
+{
+    response.EnsureSuccessStatusCode();
+    var body = await response.Content.ReadAsStringAsync();
+    Console.WriteLine(body);
+}
+```
+``` Auntenticação login.py
+import requests
+
+url = "https://api-autorizacao-teste-proj.zemafinanceira.com/connect/token"
+
+payload = "grant_type=password&scope=scope-teste&username=user-teste&password=senha-teste&client_id=client-id-teste&client_secret=client-secret-teste"
+headers = {"Content-Type": "application/x-www-form-urlencoded"}
+
+response = requests.request("POST", url, data=payload, headers=headers)
+
+print(response.text)
+```
+```Auntenticação login.http
+POST /connect/token HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+Host: api-autorizacao-teste-proj.zemafinanceira.com
+Content-Length: 138
+
+grant_type=password&scope=scope-teste&username=user-teste&password=senha-teste&client_id=client-id-teste&client_secret=client-secret-teste
+```
+
+</CodeGroup>
+Após a execução deste método, o servidor responderá com informações relacionadas ao usuário autenticado, acompanhadas de um token JWT com uma validade de 1 hora. Este token deve ser incluído como parte do cabeçalho "Authorization" "Authorization header" em todas as requisições subsequentes como medida de autenticação.
+
+<Note>É crucial destacar que o token tem uma validade restrita, limitada a apenas 1 hora. A fim de prevenir eventuais problemas de autenticação, aconselhamos realizar a solicitação de novos tokens sempre antes da expiração desse prazo.</Note>
 
 <Card
   title="Plant Store Endpoints"
