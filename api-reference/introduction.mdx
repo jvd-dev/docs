@@ -1,6 +1,6 @@
 ---
 title: 'Integrações APIs'
-description: 'Example section for showcasing API endpoints'
+description: 'Simplificando a integração por meio da API.'
 ---
 
 <Note>
@@ -91,22 +91,3 @@ Após a execução deste método, o servidor responderá com informações relac
 
 <Note>É crucial destacar que o token tem uma validade restrita, limitada a apenas 1 hora. A fim de prevenir eventuais problemas de autenticação, aconselhamos realizar a solicitação de novos tokens sempre antes da expiração desse prazo.</Note>
 
-<Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
->
-  View the OpenAPI specification file
-</Card>
-
-## Authentication
-
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
-
-```json
-"security": [
-  {
-    "bearerAuth": []
-  }
-]
-```
