@@ -1,22 +1,16 @@
 {
-   "openapi":"3.0.1",
-   "info":{
-      "title":"Sicred - API de Simulação FGTS",
-      "description":"Recursos necessários realização das operações de simulação FGTS.",
-      "contact":{
-         "name":"Sicred Informática Ltda.",
-         "url":"http://www.sicred.com",
-         "email":"helpdesk@sicred.com"
-      },
-      "license":{
-         "name":"Sicred License",
-         "url":"http://www.sicred.com"
-      },
-      "version":"v1"
-   },
-     "servers": [
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI Plant Store",
+    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
+    "license": {
+      "name": "MIT"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
     {
-      "url": "https://fgts.zemafinanceira.com:9902/simulacaofgts-service"
+      "url": "http://sandbox.mintlify.com"
     }
   ],
   "security": [
@@ -24,699 +18,178 @@
       "bearerAuth": []
     }
   ],
-   "paths":{
-      "/api/simulacao/flex":{
-         "post":{
-            "tags":[
-               "SimulacaoFgts"
-            ],
-            "summary":"Realiza a simulação flex FGTS, baseada em um fluxo de parcelas com valores máximos de PMT informados na requisição",
-            "description":"Diferente das requisições realizadas nos recursos <b>api/calculadora</b>, os dados\r\nde operação de crédito nesta requisição são persisitidos para posterior inclusão de proposta.\r\n            \r\nExemplo de requisição:\r\n            \r\n    POST /api/simulacao/flex\r\n    {\r\n        \"empresa\": \"01\",\r\n        \"agencia\": \"0001\",\r\n        \"cpf\": \"03688119053\",\r\n        \"lojista\": \"000001\",\r\n        \"loja\": \"0001\",\r\n        \"produto\": \"000072\",\r\n        \"plano\": \"6274\",\r\n        \"parcelasFlex\": [\r\n        {\r\n          \"Vcto\": \"2022-01T00:00:00.000Z\",\r\n          \"valorMaximo\": 1004.61\r\n        },\r\n        {\r\n          \"Vcto\": \"2023-01T00:00:00.000Z\",\r\n          \"valorMaximo\": 1000.64\r\n        },\r\n        {\r\n          \"Vcto\": \"2024-01T00:00:00.000Z\",\r\n          \"valorMaximo\": 905.12\r\n        },\r\n        {\r\n          \"Vcto\": \"2025-01T00:00:00.000Z\",\r\n          \"valorMaximo\": 911.09\r\n        },\r\n        {\r\n          \"Vcto\": \"2026-01T00:00:00.000Z\",\r\n          \"valorMaximo\": 880.92\r\n        }\r\n      ]\r\n    }",
-            "requestBody":{
-               "description":"Dados da simulação flex FGTS que será realizada",
-               "content":{
-                  "application/json":{
-                     "schema":{
-                        "$ref":"#/components/schemas/SimularFlexPostCommand"
-                     }
-                  },
-                  "text/json":{
-                     "schema":{
-                        "$ref":"#/components/schemas/SimularFlexPostCommand"
-                     }
-                  },
-                  "application/*+json":{
-                     "schema":{
-                        "$ref":"#/components/schemas/SimularFlexPostCommand"
-                     }
-                  }
-               }
-            },
-            "responses":{
-               "200":{
-                  "description":"Retorna o resultado da simulação flex FGTS realizada",
-                  "content":{
-                     "text/plain":{
-                        "schema":{
-                           "$ref":"#/components/schemas/SimulacaoFlexResponse"
-                        }
-                     },
-                     "application/json":{
-                        "schema":{
-                           "$ref":"#/components/schemas/SimulacaoFlexResponse"
-                        }
-                     },
-                     "text/json":{
-                        "schema":{
-                           "$ref":"#/components/schemas/SimulacaoFlexResponse"
-                        }
-                     }
-                  }
-               },
-               "400":{
-                  "description":"Dados de simulação flex FGTS inválidos",
-                  "content":{
-                     "text/plain":{
-                        "schema":{
-                           "type":"array",
-                           "items":{
-                              "$ref":"#/components/schemas/ErrorMessage"
-                           }
-                        }
-                     },
-                     "application/json":{
-                        "schema":{
-                           "type":"array",
-                           "items":{
-                              "$ref":"#/components/schemas/ErrorMessage"
-                           }
-                        }
-                     },
-                     "text/json":{
-                        "schema":{
-                           "type":"array",
-                           "items":{
-                              "$ref":"#/components/schemas/ErrorMessage"
-                           }
-                        }
-                     }
-                  }
-               }
+  "paths": {
+    "/plants": {
+      "get": {
+        "description": "Returns all plants from the system that the user has access to",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The maximum number of results to return",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
             }
-         }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Plant response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Plant"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
       },
-      "/api/simulacao/fgts":{
-         "post":{
-            "tags":[
-               "SimulacaoFgts"
-            ],
-            "summary":"Realiza a simulação FGTS, baseada em um fluxo de parcelas retornado pela CEF",
-            "description":"O CPF informado na requisição será utiizado para consultar os dados do trabalhador na CEF, verificando o seu\r\nfluxo de parcelas permitidos para a operação. Caso seja informado o <b>valorSolicitado</b>, será utilizado\r\no valor informado na operação. Caso o valor máximo da operação seja maior do que o máximo calculado para\r\no fluxo de parcelas retornado pela CEF, uma mensagem de erro amigável será apresentada no formato de erro\r\npara status 400.\r\n            \r\nDiferente das requisições realizadas nos recursos <b>api/calculadora</b>, os dados\r\nde operação de crédito nesta requisição são persisitidos para posterior inclusão de proposta.\r\n            \r\nExemplo de requisição:\r\n            \r\n    POST /api/simulacao/fgts\r\n    {\r\n          \"empresa\": \"01\",\r\n          \"agencia\": \"0001\",\r\n          \"cpf\": \"03688119053\",\r\n          \"lojista\": \"000001\",\r\n          \"loja\": \"0001\",\r\n          \"produto\": \"000072\",\r\n          \"plano\": \"6274\"\r\n    }",
-            "requestBody":{
-               "description":"",
-               "content":{
-                  "application/json":{
-                     "schema":{
-                        "$ref":"#/components/schemas/SimularFgtsPostCommand"
-                     }
-                  },
-                  "text/json":{
-                     "schema":{
-                        "$ref":"#/components/schemas/SimularFgtsPostCommand"
-                     }
-                  },
-                  "application/*+json":{
-                     "schema":{
-                        "$ref":"#/components/schemas/SimularFgtsPostCommand"
-                     }
-                  }
-               }
-            },
-            "responses":{
-               "200":{
-                  "description":"Retorna o resultado da simulação flex FGTS realizada com base nas informações retornadas pela CEF",
-                  "content":{
-                     "text/plain":{
-                        "schema":{
-                           "$ref":"#/components/schemas/SimulacaoFlexResponse"
-                        }
-                     },
-                     "application/json":{
-                        "schema":{
-                           "$ref":"#/components/schemas/SimulacaoFlexResponse"
-                        }
-                     },
-                     "text/json":{
-                        "schema":{
-                           "$ref":"#/components/schemas/SimulacaoFlexResponse"
-                        }
-                     }
-                  }
-               },
-               "400":{
-                  "description":"Dados da simulação flex FGTS com consulta à CEF inválidos",
-                  "content":{
-                     "text/plain":{
-                        "schema":{
-                           "type":"array",
-                           "items":{
-                              "$ref":"#/components/schemas/ErrorMessage"
-                           }
-                        }
-                     },
-                     "application/json":{
-                        "schema":{
-                           "type":"array",
-                           "items":{
-                              "$ref":"#/components/schemas/ErrorMessage"
-                           }
-                        }
-                     },
-                     "text/json":{
-                        "schema":{
-                           "type":"array",
-                           "items":{
-                              "$ref":"#/components/schemas/ErrorMessage"
-                           }
-                        }
-                     }
-                  }
-               },
-               "502":{
-                  "description":"Erro ao acessar a API CEF"
-               }
+      "post": {
+        "description": "Creates a new plant in the store",
+        "requestBody": {
+          "description": "Plant to add to the store",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewPlant"
+              }
             }
-         }
-      },
-      "/api/simulacao/{Empresa}/{Codigo}/detalhe":{
-         "get":{
-            "tags":[
-               "SimulacaoFgts"
-            ],
-            "summary":"Consulta os detalhes da operação realizada em uma simulação",
-            "description":"O CPF informado na req",
-            "parameters":[
-               {
-                  "name":"Empresa",
-                  "in":"path",
-                  "required":true,
-                  "schema":{
-                     "type":"string"
-                  }
-               },
-               {
-                  "name":"Codigo",
-                  "in":"path",
-                  "required":true,
-                  "schema":{
-                     "type":"number",
-                     "format":"double"
-                  }
-               }
-            ],
-            "responses":{
-               "200":{
-                  "description":"Retorna os dados persistidos da simulação informada",
-                  "content":{
-                     "text/plain":{
-                        "schema":{
-                           "$ref":"#/components/schemas/SimulacaoFlexResponse"
-                        }
-                     },
-                     "application/json":{
-                        "schema":{
-                           "$ref":"#/components/schemas/SimulacaoFlexResponse"
-                        }
-                     },
-                     "text/json":{
-                        "schema":{
-                           "$ref":"#/components/schemas/SimulacaoFlexResponse"
-                        }
-                     }
-                  }
-               },
-               "404":{
-                  "description":"Simulação solicitada não existe na base de dados",
-                  "content":{
-                     "text/plain":{
-                        "schema":{
-                           "$ref":"#/components/schemas/ProblemDetails"
-                        }
-                     },
-                     "application/json":{
-                        "schema":{
-                           "$ref":"#/components/schemas/ProblemDetails"
-                        }
-                     },
-                     "text/json":{
-                        "schema":{
-                           "$ref":"#/components/schemas/ProblemDetails"
-                        }
-                     }
-                  }
-               }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "plant response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Plant"
+                }
+              }
             }
-         }
-      },
-   "components":{
-      "schemas":{
-         "Category":{
-            "enum":[
-               "Undefined",
-               "InvalidData",
-               "NotFound",
-               "Conflict",
-               "DataBase",
-               "ExternalError",
-               "InternalError",
-               "Duplicated"
-            ],
-            "type":"string"
-         },
-         "ErrorMessage":{
-            "type":"object",
-            "properties":{
-               "fields":{
-                  "type":"array",
-                  "items":{
-                     "type":"string"
-                  },
-                  "nullable":true
-               },
-               "code":{
-                  "type":"string",
-                  "nullable":true
-               },
-               "message":{
-                  "type":"string",
-                  "nullable":true
-               },
-               "category":{
-                  "$ref":"#/components/schemas/Category"
-               }
-            },
-            "additionalProperties":false
-         },
-         "ParcelaFlex":{
-            "type":"object",
-            "properties":{
-               "vcto":{
-                  "type":"string",
-                  "description":"Data de vencimento da Parcela Flex",
-                  "format":"date-time"
-               },
-               "valorMaximo":{
-                  "type":"number",
-                  "description":"PMT Máxima da parcela no calculo Flex",
-                  "format":"double"
-               }
-            },
-            "additionalProperties":false
-         },
-         "ProblemDetails":{
-            "type":"object",
-            "properties":{
-               "type":{
-                  "type":"string",
-                  "nullable":true
-               },
-               "title":{
-                  "type":"string",
-                  "nullable":true
-               },
-               "status":{
-                  "type":"integer",
-                  "format":"int32",
-                  "nullable":true
-               },
-               "detail":{
-                  "type":"string",
-                  "nullable":true
-               },
-               "instance":{
-                  "type":"string",
-                  "nullable":true
-               }
-            },
-            "additionalProperties":{
-               
+          },
+          "400": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
             }
-         },
-         "SimulacaoFlexParcelaResponse":{
-            "type":"object",
-            "properties":{
-               "parcela":{
-                  "type":"integer",
-                  "format":"int32"
-               },
-               "pmt":{
-                  "type":"number",
-                  "format":"double"
-               },
-               "vcto":{
-                  "type":"string",
-                  "format":"date-time"
-               },
-               "iofNormal":{
-                  "type":"number",
-                  "format":"double"
-               },
-               "iofAdicional":{
-                  "type":"number",
-                  "format":"double"
-               },
-               "principal":{
-                  "type":"number",
-                  "format":"double"
-               },
-               "renda":{
-                  "type":"number",
-                  "format":"double"
-               }
-            },
-            "additionalProperties":false
-         },
-         "SimulacaoFlexResponse":{
-            "type":"object",
-            "properties":{
-               "prazo":{
-                  "type":"integer",
-                  "description":"Prazo de pagamento",
-                  "format":"int32"
-               },
-               "valorEntrada":{
-                  "type":"number",
-                  "description":"Valor entrada",
-                  "format":"double"
-               },
-               "valorSolicitado":{
-                  "type":"number",
-                  "description":"Valor solicitado",
-                  "format":"double"
-               },
-               "valorParcela":{
-                  "type":"number",
-                  "description":"Valor da parcela",
-                  "format":"double"
-               },
-               "valorTAC":{
-                  "type":"number",
-                  "description":"Valor da TAC",
-                  "format":"double"
-               },
-               "valorTFC":{
-                  "type":"number",
-                  "description":"Valor da TFC",
-                  "format":"double"
-               },
-               "valorPST":{
-                  "type":"number",
-                  "description":"Valor total das tarifas de prestação de serviçoes de terceiros",
-                  "format":"double"
-               },
-               "valorSeguro":{
-                  "type":"number",
-                  "description":"Valor do seguro",
-                  "format":"double"
-               },
-               "valorIOF":{
-                  "type":"number",
-                  "description":"Valor do IOF total",
-                  "format":"double"
-               },
-               "valorIOFNormal":{
-                  "type":"number",
-                  "description":"Valor do IOF normal",
-                  "format":"double"
-               },
-               "valorIOFAdicional":{
-                  "type":"number",
-                  "description":"Valor do IOF adicional",
-                  "format":"double"
-               },
-               "valorFinanciadoTotal":{
-                  "type":"number",
-                  "description":"Valor financiado total (valor solicitado + tarifas + IOF)",
-                  "format":"double"
-               },
-               "valorLiberado":{
-                  "type":"number",
-                  "description":"Valor Liberado Final",
-                  "format":"double",
-                  "nullable":true
-               },
-               "taxaMes":{
-                  "type":"number",
-                  "description":"Taxa de juros mensal",
-                  "format":"double"
-               },
-               "taxaAno":{
-                  "type":"number",
-                  "description":"Taxa de juros anual",
-                  "format":"double"
-               },
-               "cetMes":{
-                  "type":"number",
-                  "description":"Custo efetivo total mensal",
-                  "format":"double"
-               },
-               "cetAno":{
-                  "type":"number",
-                  "description":"Custo efetivo total anual",
-                  "format":"double"
-               },
-               "dataEmissao":{
-                  "type":"string",
-                  "description":"Data base de cálculo da simulação",
-                  "format":"date-time"
-               },
-               "dataPrimeiroVencimento":{
-                  "type":"string",
-                  "description":"Data de vencimento da primeira parcela",
-                  "format":"date-time"
-               },
-               "idSimulacao":{
-                  "type":"integer",
-                  "description":"Código da simulação",
-                  "format":"int64"
-               },
-               "parcelas":{
-                  "type":"array",
-                  "items":{
-                     "$ref":"#/components/schemas/SimulacaoFlexParcelaResponse"
-                  },
-                  "description":"Parcelas Flex calculadas a partir do fluxo de entrada",
-                  "nullable":true
-               },
-               "totalParcelas":{
-                  "type":"number",
-                  "description":"Valor total das parcelas",
-                  "format":"double",
-                  "readOnly":true
-               }
-            },
-            "additionalProperties":false,
-            "description":"Objeto de retorno da simulação"
-         },
-         "SimularFgtsPostCommand":{
-            "required":[
-               "agencia",
-               "cpf",
-               "empresa",
-               "loja",
-               "lojista",
-               "plano",
-               "produto"
-            ],
-            "type":"object",
-            "properties":{
-               "empresa":{
-                  "minLength":1,
-                  "pattern":"^[0-9]{2}$",
-                  "type":"string",
-                  "description":"Código da empresa para simulação"
-               },
-               "agencia":{
-                  "minLength":1,
-                  "pattern":"^[0-9]{4}$",
-                  "type":"string",
-                  "description":"Código da agência"
-               },
-               "cpf":{
-                  "minLength":1,
-                  "pattern":"^[0-9]{11}$|^[0-9]{14}$",
-                  "type":"string",
-                  "description":"Código do CPF"
-               },
-               "lojista":{
-                  "minLength":1,
-                  "pattern":"^[0-9]{6}$",
-                  "type":"string",
-                  "description":"Código do lojista"
-               },
-               "loja":{
-                  "minLength":1,
-                  "pattern":"^[0-9]{4}$",
-                  "type":"string",
-                  "description":"Código da loja"
-               },
-               "dataInicio":{
-                  "type":"string",
-                  "description":"Data de emissao da proposta. Se não informado, corresponde a data de movimento do sistema",
-                  "format":"date-time",
-                  "nullable":true
-               },
-               "produto":{
-                  "minLength":1,
-                  "pattern":"^[0-9a-zA-Z]{6}$",
-                  "type":"string",
-                  "description":"Código do produto"
-               },
-               "plano":{
-                  "minLength":1,
-                  "pattern":"^[0-9a-zA-Z]{4}$",
-                  "type":"string",
-                  "description":"Código do plano"
-               },
-               "prazo":{
-                  "pattern":"^[0-9]{3}$|^$",
-                  "type":"string",
-                  "description":"Prazo Solicitado da Operação. Caso não informado, retornará o menor prazo do valor máximmo ou solicitado",
-                  "nullable":true
-               },
-               "valorSolicitado":{
-                  "maximum":99999999,
-                  "minimum":0,
-                  "type":"number",
-                  "description":"Valor Solicitado da Operação. Caso não informado, utilizará o valor compra máximo permitido para o fluxo de parcelas informado",
-                  "format":"double"
-               },
-               "temSeguro":{
-                  "type":"boolean",
-                  "description":"Quando elegível, permite que o consumidor defina a aplicabilidade do seguro sobre a operação",
-                  "nullable":true
-               },
-               "atualizarSaldos":{
-                  "type":"boolean",
-                  "description":"Força atualização de saldo do cliente. Necessário parametrização global do serviço.",
-                  "nullable":true
-               },
-               "taxa":{
-                  "maximum":100,
-                  "minimum":0,
-                  "type":"number",
-                  "format":"double",
-                  "nullable":true
-               },
-               "simulacaoMultipla":{
-                  "type":"boolean",
-                  "description":"Quando o produto estiver parametrizado para permitir múltiplas simulações E este campo for true,\r\nserá retornado parcelas em ordem crescente para cada simulação realizada.\r\nExemplo: Simulação 1 - parcela 1, Simulação 2 - parcela 1 e 2",
-                  "nullable":true
-               }
-            },
-            "additionalProperties":false,
-            "description":"SimularPostCommand"
-         },
-         "SimularFlexPostCommand":{
-            "required":[
-               "agencia",
-               "cpf",
-               "dataInicio",
-               "empresa",
-               "loja",
-               "lojista",
-               "parcelasFlex",
-               "plano",
-               "produto"
-            ],
-            "type":"object",
-            "properties":{
-               "empresa":{
-                  "minLength":1,
-                  "pattern":"^[0-9]{2}$",
-                  "type":"string",
-                  "description":"Código da empresa para simulação"
-               },
-               "agencia":{
-                  "minLength":1,
-                  "pattern":"^[0-9]{4}$",
-                  "type":"string",
-                  "description":"Código da agência"
-               },
-               "cpf":{
-                  "minLength":1,
-                  "pattern":"^[0-9]{11}$|^[0-9]{14}$",
-                  "type":"string",
-                  "description":"Código do CPF"
-               },
-               "lojista":{
-                  "minLength":1,
-                  "pattern":"^[0-9]{6}$",
-                  "type":"string",
-                  "description":"Código do lojista"
-               },
-               "loja":{
-                  "minLength":1,
-                  "pattern":"^[0-9]{4}$",
-                  "type":"string",
-                  "description":"Código da loja"
-               },
-               "dataInicio":{
-                  "type":"string",
-                  "description":"Data de emissao da proposta. Se não informado, corresponde a data de movimento do sistema",
-                  "format":"date-time"
-               },
-               "produto":{
-                  "minLength":1,
-                  "pattern":"^[0-9a-zA-Z]{6}$",
-                  "type":"string",
-                  "description":"Código do produto"
-               },
-               "plano":{
-                  "minLength":1,
-                  "pattern":"^[0-9a-zA-Z]{4}$",
-                  "type":"string",
-                  "description":"Código do plano"
-               },
-               "valorSolicitado":{
-                  "maximum":99999999,
-                  "minimum":0,
-                  "type":"number",
-                  "description":"Valor Solicitado da Operação. Caso não informado, utilizará o valor compra máximo permitido para o fluxo de parcelas informado",
-                  "format":"double"
-               },
-               "temSeguro":{
-                  "type":"boolean",
-                  "description":"Quando elegível, permite que o consumidor defina a aplicabilidade do seguro sobre a operação",
-                  "nullable":true
-               },
-               "simulacaoMultipla":{
-                  "type":"boolean",
-                  "description":"Quando o produto estiver parametrizado para permitir múltiplas simulações E este campo for true,\r\nserá retornado parcelas em ordem crescente para cada simulação realizada.\r\nExemplo: Simulação 1 - parcela 1, Simulação 2 - parcela 1 e 2",
-                  "nullable":true
-               },
-               "taxa":{
-                  "maximum":100,
-                  "minimum":0,
-                  "type":"number",
-                  "description":"Taxa Utilizada. Caso não informada, a taxa do plano será utilizada",
-                  "format":"double",
-                  "nullable":true
-               },
-               "parcelasFlex":{
-                  "type":"array",
-                  "items":{
-                     "$ref":"#/components/schemas/ParcelaFlex"
-                  }
-               }
-            },
-            "additionalProperties":false,
-            "description":"SimularPostCommand"
-         }
-      },
-      "securitySchemes":{
-         "oauth2":{
-            "type":"oauth2",
-            "description":"Client credentials needed.",
-            "flows":{
-               "password":{
-                  "tokenUrl":"https://apiautorizacao.zemafinanceira.com/connect/token",
-                  "scopes":{
-                     "sicred.fgts":"Operações Necessárias para o Fgts",
-                     "offline_access":"Refresh token"
-                  }
-               }
-            }
-         }
+          }
+        }
       }
-   },
-   "security":[
-      {
-         "oauth2":[
-            "CpMultiCanais",
-            "api",
-            "offline_access"
-         ]
+    },
+    "/plants/{id}": {
+      "delete": {
+        "description": "Deletes a single plant based on the ID supplied",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of plant to delete",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Plant deleted",
+            "content": {}
+          },
+          "400": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
       }
-   ]
+    }
+  },
+  "components": {
+    "schemas": {
+      "Plant": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "The name of the plant",
+            "type": "string"
+          },
+          "tag": {
+            "description": "Tag to specify the type",
+            "type": "string"
+          }
+        }
+      },
+      "NewPlant": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Plant"
+          },
+          {
+            "required": [
+              "id"
+            ],
+            "type": "object",
+            "properties": {
+              "id": {
+                "description": "Identification number of the plant",
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          }
+        ]
+      },
+      "Error": {
+        "required": [
+          "error",
+          "message"
+        ],
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  }
 }
