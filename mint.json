@@ -50,7 +50,7 @@
       ]
     },
     {
-      "group": "Endpoint Examples",
+      "group": "Integrações por Produtos",
       "pages": [
         "api-reference/endpoint/FGTS",
         "api-reference/endpoint/create",
