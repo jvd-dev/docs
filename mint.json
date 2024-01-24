@@ -39,8 +39,8 @@
       "group": "Inicio",
       "pages": [
         "introduction",
-        "quickstart",
-        "development"
+        "api-reference",
+        "Dúvidas frequentes"
       ]
     },
     {
