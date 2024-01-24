@@ -9,13 +9,14 @@ description: 'Veja em simples passos como submeter uma proposta de antecipação
 Com o processo de [autenticação](/api-reference/) previamente apresentado concluído e o token obtido, poderemos dar sequência ao processo de simulação da proposta.
 
 ## Como Simular?
-Para submeter uma simulação do produto do FGTS, deve ser atendado alguns pontos para que seja obtido sucesso.
+
+Para submeter uma simulação do produto do FGTS, alguns pontos devem ser observados para garantir o sucesso da operação.
 
 <Steps>
-  <Step title="O cliente deve autorizar a Zema financeira a consultar o saldo disponível no FGTS">
+  <Step title="O cliente deve conceder autorização à Zema Financeira para consultar o saldo disponível no FGTS.">
     
   </Step>
-  <Step title="No Ambiente de Homologação deve ser utilizado CPFs específicos de massa de teste.">
+  <Step title="No ambiente de homologação, é necessário utilizar CPFs específicos de massa de teste.">
   <Accordion title="Massa de teste">
    00529215578
 
@@ -38,18 +39,140 @@ Para submeter uma simulação do produto do FGTS, deve ser atendado alguns ponto
 {
 	"empresa": "01",
 	"agencia": "0001",
-	"cpf": "91941024068",
+	"cpf": "00532220323",
 	"lojista": "000001",
 	"loja": "0001",
 	"produto": "000090",
 	"plano": "FG16",
 	"temSeguro": false,
-	"valorSolicitado": 1000,
 	"simulacaoMultipla": true
 }
 ```
 </ResponseField>
 
-<Tip>Vale lembrar que as informações de lojista, loja, produto e plano serão disponibilizado préviamente pelo setor comercial.</Tip>
+<Tip>Vale lembrar que as informações do lojista, loja, produto e plano serão disponibilizadas previamente pelo setor comercial.</Tip>
+
+Com a execução desse request, serão obtidas informações relacionadas ao saldo disponível para a operação, juntamente com detalhes sobre as taxas praticadas. Veja abaixo um exemplo de response:
+<Accordion title="Response Simulação">
+```
+{
+	"idSimulacao": 8698434,
+	"parcelas": [
+		{
+			"parcela": 1,
+			"pmt": 310.41,
+			"vcto": "2024-05-01T00:00:00-03:00",
+			"iofNormal": 2.67,
+			"iofAdicional": 1.09,
+			"principal": 287.67,
+			"renda": 22.74
+		},
+		{
+			"parcela": 2,
+			"pmt": 294.89,
+			"vcto": "2025-05-01T00:00:00-03:00",
+			"iofNormal": 6.4,
+			"iofAdicional": 0.81,
+			"principal": 213.75,
+			"renda": 81.14
+		},
+		{
+			"parcela": 3,
+			"pmt": 280.15,
+			"vcto": "2026-05-01T00:00:00-03:00",
+			"iofNormal": 4.75,
+			"iofAdicional": 0.61,
+			"principal": 158.83,
+			"renda": 121.32
+		},
+		{
+			"parcela": 4,
+			"pmt": 266.13,
+			"vcto": "2027-05-01T00:00:00-03:00",
+			"iofNormal": 3.53,
+			"iofAdicional": 0.45,
+			"principal": 118.02,
+			"renda": 148.11
+		},
+		{
+			"parcela": 5,
+			"pmt": 252.84,
+			"vcto": "2028-05-01T00:00:00-03:00",
+			"iofNormal": 2.62,
+			"iofAdicional": 0.34,
+			"principal": 87.64,
+			"renda": 165.2
+		},
+		{
+			"parcela": 6,
+			"pmt": 240.2,
+			"vcto": "2029-05-01T00:00:00-03:00",
+			"iofNormal": 1.95,
+			"iofAdicional": 0.25,
+			"principal": 65.12,
+			"renda": 175.08
+		},
+		{
+			"parcela": 7,
+			"pmt": 228.17,
+			"vcto": "2030-05-01T00:00:00-03:00",
+			"iofNormal": 1.45,
+			"iofAdicional": 0.18,
+			"principal": 48.38,
+			"renda": 179.79
+		},
+		{
+			"parcela": 8,
+			"pmt": 210.46,
+			"vcto": "2031-05-01T00:00:00-03:00",
+			"iofNormal": 1.04,
+			"iofAdicional": 0.14,
+			"principal": 34.9,
+			"renda": 175.56
+		},
+		{
+			"parcela": 9,
+			"pmt": 186.87,
+			"vcto": "2032-05-01T00:00:00-03:00",
+			"iofNormal": 0.72,
+			"iofAdicional": 0.1,
+			"principal": 24.23,
+			"renda": 162.64
+		},
+		{
+			"parcela": 10,
+			"pmt": 158.79,
+			"vcto": "2033-05-01T00:00:00-03:00",
+			"iofNormal": 0.48,
+			"iofAdicional": 0.06,
+			"principal": 16.1,
+			"renda": 142.69
+		}
+	],
+	"totalParcelas": 2428.91,
+	"prazo": 10,
+	"valorEntrada": 0,
+	"valorSolicitado": 1000,
+	"valorParcela": 0,
+	"valorTAC": 25,
+	"valorTFC": 0,
+	"valorPST": 0,
+	"valorSeguro": 0,
+	"valorIOF": 29.64,
+	"valorIOFNormal": 25.61,
+	"valorIOFAdicional": 4.03,
+	"valorFinanciadoTotal": 1054.64,
+	"valorLiberado": 1000,
+	"taxaMes": 1.94,
+	"taxaAno": 27.4223,
+	"cetMes": 2.214141,
+	"cetAno": 30.531991,
+	"dataEmissao": "2024-01-09T00:00:00",
+	"dataPrimeiroVencimento": "2024-05-01T00:00:00-03:00"
+}
+```
+</Accordion>
+
+No caso da simulação demonstrada acima, não foi fornecido o valor da operação. Dessa maneira, o sistema interpreta que o usuário tem a intenção de obter o saldo máximo liberado para o cliente.
 
 
