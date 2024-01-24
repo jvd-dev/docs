@@ -357,4 +357,37 @@ Ao realizar esse request, será enviado ao cliente um SMS e um E-mail contendo o
 
 <Warning>Atenção! O telefone e o e-mail informados neste request deverão ser os mesmos informados no cadastro do cliente.</Warning>
 
+Após a assinatura ser concluída pelo cliente, a proposta será redirecionada de forma automática para a situação 34 - ENVIANDO PARA FORMALIZAÇÃO (SITUAÇÃO TRANSITÓRIA) - 23 ANÁLISE - FORMALIZAÇÃO.
+
+<Check>Assinatura concluída.</Check>
+
+### Analise interna da proposta.
+Situação 23 ANÁLISE - FORMALIZAÇÃO.
+
+Nessa etapa a proposta será submetida a um processo de analise automatica. Nessa analise será revisado a formalização e os dados cadastrais do cliente. Caso as informações analisadas estejam fora da política operacional da Zema Fiananceira a proposta poderá seguir dois fluxos:
+<Steps>
+  <Step title="Proposta reprovada pela política de analise.">
+Caso a proposta não esteja em conformidade com a política de aprovação ou apresente pendências, a proposta será reprovada, sendo direcionada para a situação 26 - REPROVADO FORMALIZAÇÃO (final de fluxo).
+  </Step>
+  <Step title="Proposta pendente devido a questões na política de analise.">
+Caso seja encontrada alguma irregularidade passível de pendência durante a análise, a proposta será redirecionada para a situação 24 - PENDENTE FORMALIZAÇÃO. Nessa situação, você, nosso parceiro, poderá atuar na proposta, regularizando as pendências pontuadas.
+  </Step>
+  <Step title="Proposta APROVADA.">
+   <Check>Proposta redirecionada à situação 25 EFETIVAR CONTRATO.</Check>
+  </Step>
+</Steps>
+
+<Frame caption="Fluxo completo Produto Antecipação saque-aniversário fgts">
+<img src="/images/Fluxo_feliz-removebg-preview.png" />
+</Frame>
+
+<Info>Reiteramos que para acompanhar o status da proposta, é recomendado consultar frequentemente o endpoint `Situacao`.</Info>
+<ResponseField name="/api/Proposta/01/9791113/Situacao" type="GET"></ResponseField>
+
+## Efetivando a Proposta.
+Para efetivar o contrato e concluir o fluxo de contratação do produto FGTS, será necessário executar o endpoint `efetivar`, passando o número da proposta na rota do request.
+
+<ResponseField name="/api/Proposta/01/9791113/efetivar" type="POST"></ResponseField>
+
+<Check>Chegamos ao Fim da contratação de uma proposta de FGTS.🎉</Check>
 
