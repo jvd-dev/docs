@@ -7,3 +7,49 @@ description: 'Veja em simples passos como submeter uma proposta de antecipação
 </Frame>
 
 Com o processo de [autenticação](/api-reference/) previamente apresentado concluído e o token obtido, poderemos dar sequência ao processo de simulação da proposta.
+
+## Como Simular?
+Para submeter uma simulação do produto do FGTS, deve ser atendado alguns pontos para que seja obtido sucesso.
+
+<Steps>
+  <Step title="O cliente deve autorizar a Zema financeira a consultar o saldo disponível no FGTS">
+    
+  </Step>
+  <Step title="No Ambiente de Homologação deve ser utilizado CPFs específicos de massa de teste.">
+  <Accordion title="Massa de teste">
+   00529215578
+
+00529829398
+
+00532220323
+
+00537056530
+
+00541956329
+
+00543660389
+</Accordion>
+  </Step>
+</Steps>
+
+### Request Simulação
+<ResponseField name="/api/simulacao/fgts" type="POST">
+```
+{
+	"empresa": "01",
+	"agencia": "0001",
+	"cpf": "91941024068",
+	"lojista": "000001",
+	"loja": "0001",
+	"produto": "000090",
+	"plano": "FG16",
+	"temSeguro": false,
+	"valorSolicitado": 1000,
+	"simulacaoMultipla": true
+}
+```
+</ResponseField>
+
+<Tip>Vale lembrar que as informações de lojista, loja, produto e plano serão disponibilizado préviamente pelo setor comercial.</Tip>
+
+
