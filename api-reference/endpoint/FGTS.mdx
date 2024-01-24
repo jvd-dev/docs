@@ -177,10 +177,31 @@ Com a execução desse request, serão obtidas informações relacionadas ao sal
 No caso da simulação demonstrada acima, não foi fornecido o valor da operação. Dessa maneira, o sistema interpreta que o usuário tem a intenção de obter o saldo máximo liberado para o cliente.
 Para adicionar valor na operação, basta adicionar no body a seguinte informação: "valorSolicitado": Valor da operação.
 
-### Request Simulação
-Para a criação da proposta no sistema, utilizaremos a API de proposta no endpoint `/Proposta/fgts`, sendo necessário informar no corpo (body) o Id da simulação retornado no request de simulação. Veja o exemplo abaixo:
+### Request API Proposta
+Para a criação da proposta no sistema, utilizaremos a API de proposta no endpoint `/Proposta/fgts`, sendo necessário informar no body o Id da simulação retornado no request de simulação. Veja o exemplo abaixo:
 
-
-API Proposta (Homologação): https://api-propostas-teste-proj.zemafinanceira.com/
+API Propostas (Homologação): https://api-propostas-teste-proj.zemafinanceira.com
 <ResponseField name="/api/Proposta/fgts" type="POST">
+```
+{
+
+  "empresa": "01",
+  "cpfVendedor": "66278996634",
+  "cpfCertificado": "66278996634",
+  "idSimulacao": 8698434,
+  "prazo": "002"
+
+}
+```
+</ResponseField>
+
+<RequestExample>
+
+```bash Request
+  curl --request POST \
+    --url https://dog-api.kinduff.com/api/facts
+```
+
+</RequestExample>
+
 
