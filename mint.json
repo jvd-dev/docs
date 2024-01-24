@@ -46,7 +46,7 @@
       "group": "Integrações por Produtos",
       "pages": [
         "api-reference/endpoint/FGTS",
-        "api-reference/endpoint/create",
+        "api-reference/endpoint/consigando",
         "api-reference/endpoint/delete"
       ]
     }
