@@ -52,7 +52,8 @@ Para submeter uma simulação do produto do FGTS, alguns pontos devem ser observ
 
 <Tip>Vale lembrar que as informações do lojista, loja, produto e plano serão disponibilizadas previamente pelo setor comercial.</Tip>
 
-Com a execução desse request, serão obtidas informações relacionadas ao saldo disponível para a operação, juntamente com detalhes sobre as taxas praticadas. Veja abaixo um exemplo de response:
+Com a execução desse request, serão obtidas informações relacionadas ao saldo disponível para a operação, juntamente com detalhes sobre as taxas praticadas, e o Id da simulação Essa informação é extremamente importante para a criação da proposta no sistema. Veja abaixo um exemplo de response:
+
 <Accordion title="Response Simulação">
 ```
 {
@@ -174,5 +175,9 @@ Com a execução desse request, serão obtidas informações relacionadas ao sal
 </Accordion>
 
 No caso da simulação demonstrada acima, não foi fornecido o valor da operação. Dessa maneira, o sistema interpreta que o usuário tem a intenção de obter o saldo máximo liberado para o cliente.
+Para adicionar valor na operação, basta adicionar no body a seguinte informação: "valorSolicitado": Valor da operação.
+
+<Steps>
+
 
 
