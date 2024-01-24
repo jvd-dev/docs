@@ -36,14 +36,6 @@
   ],
   "navigation": [
     {
-      "group": "Inicio",
-      "pages": [
-        "introduction",
-        "api-reference",
-        "Dúvidas frequentes"
-      ]
-    },
-    {
       "group": "Integrações APIs",
       "pages": [
         "api-reference/introduction"
