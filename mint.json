@@ -47,7 +47,7 @@
       "pages": [
         "api-reference/endpoint/FGTS",
         "api-reference/endpoint/consigando",
-        "api-reference/endpoint/delete"
+        "api-reference/endpoint/Emprestimo_Pessoal"
       ]
     }
   ],
