@@ -26,7 +26,7 @@
     {
       "name": "Suporte",
       "icon": "whatsapp",
-      "url": "https://mintlify.com/community"
+      "url": "https://wa.me/5534988710658?text=Ol%C3%A1%2C+Gostaria+de+um+suporte."
     },
     {
       "name": "Blog",
@@ -35,6 +35,7 @@
     }
   ],
   "navigation": [
+    
     {
       "group": "Integrações APIs",
       "pages": [
@@ -51,8 +52,8 @@
     }
   ],
   "footerSocials": {
-    "twitter": "https://twitter.com/mintlify",
-    "github": "https://github.com/mintlify",
-    "linkedin": "https://www.linkedin.com/company/mintsearch"
+    "instagram": "https://www.instagram.com/zemafinanceira/",
+    "site": "https://www.zemafinanceira.com/",
+    "linkedin": "ttps://www.linkedin.com/company/zemafinanceira/mycompany/"
   }
 }
