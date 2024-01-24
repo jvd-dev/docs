@@ -186,8 +186,8 @@ API Propostas (Homologação): https://api-propostas-teste-proj.zemafinanceira.c
 {
 
   "empresa": "01",
-  "cpfVendedor": "66278996634",
-  "cpfCertificado": "66278996634",
+  "cpfVendedor": "CPF Do vendedor",
+  "cpfCertificado": "CPF Do usuário CERTIFICADO",
   "idSimulacao": 8698434,
   "prazo": "002"
 
@@ -195,13 +195,166 @@ API Propostas (Homologação): https://api-propostas-teste-proj.zemafinanceira.c
 ```
 </ResponseField>
 
-<RequestExample>
-
-```bash Request
-  curl --request POST \
-    --url https://dog-api.kinduff.com/api/facts
+Ao concluir o request acima, será retornado ao usuário no response uma chave `numeroProposta`. A informação retornada será utilizada em toda parte do fluxo dessa proposta. Veja o response da requisição acima:
+<Accordion title="Response Proposta">
 ```
+{
+	"numeroProposta": 9791113
+}
+```
+</Accordion>
 
-</RequestExample>
+<Check>A proposta já foi incluída, e seu status é 01 (Cadastro).</Check>
+
+
+### Request Cliente
+Com a inclusão da proposta em nosso sistema, torna-se necessário inserir os dados do cliente para dar sequência à proposta. Para isso, utilizaremos dois endpoints da API de proposta:
+
+1. Endpoint `Cliente`: Neste ponto, serão necessárias as informações referentes aos dados pessoais do cliente.
+
+2. Endpoint `Liberação`: Neste endpoint, será necessário informar os dados bancários do cliente favorecido.
+#### Cliente
+<ResponseField name="/api/Proposta/01/9791113/Cliente" type="POST">
+<Warning>Veja na URI acima que o número da proposta é passado na rota do request. Lembramos também que é necessário incluir o `/01/` antes da proposta, pois essa informação é extremamente necessária.</Warning>
+
+```
+{
+  "codigoQualificacao": "1",
+  "cpf": "00532220323",
+  "nomeCliente": "Cliente teste",
+  "dataNascimento": "2000-02-01T16:42:55.079Z",
+  "sexo": "F",
+  "numeroDocIdentidade": "5086524455",
+  "tipoDocIdentidade": "RG",
+  "ufDocIdentidade": "MG",
+  "orgaoEmissorDocIdentidade": "19",
+  "dataEmissaoDocIdentidade": "2019-02-17T16:42:55.079Z",
+  "nomeMae": "Mãe Teste",
+  "nomePai": "Pai Teste",
+  "enderecoEmail": "TESTE@HOTMAIL.COM",
+  "ppe": "N",
+  "dataPPE": "2015-02-17T16:42:55.079Z",
+  "tipoRelacaoPPE": 0,
+  "nomeRelacaoPPE": "",
+  "ufNascimento": "MG",
+  "naturalidade": "Araxa",
+  "nacionalidade": "BR",
+  "estadoCivil": "2",
+  "grauInstrucao": "1",
+  "cepResidencial": "93115410",
+  "enderecoResidencial": "RUA FELIZ",
+  "numeroResidencial": "14",
+  "complementoResidencial": "CASA 5",
+  "bairroResidencial": "SANTO",
+  "cidadeResidencial": "FELIZ",
+  "ufResidencial": "MG",
+  "resideDesde": "02/2000",
+  "tipoResidencia": "1",
+  "telefoneCelular": "999999999",
+  "dddTelefoneCelular": "034",
+  "nomeEmpresaAtividade": "CAPS LTDA",
+  "dataAdmissaoEmpresaAtividade": "2015-02-17T16:42:55.079Z",
+  "profissaoAtividade": "0001",
+  "cargoAtividade": "ADM",
+  "funcionarioConvenio": false,
+  "rendaMensalAtividade": 1000,
+  "autorizaCompartilhamentodeDados": true
+}
+```
+</ResponseField>
+
+<Note>Destacamos que todas as informações demonstradas acima são necessárias para a execução do request.</Note>
+
+#### Liberação
+
+<ResponseField name="/api/Proposta/01/9791113/Liberacao" type="POST">
+```
+[
+  {
+    "nomeBeneficiario": "Cliente teste",
+    "cpf": "00532220323",
+    "formaLiberacao": "5",
+    "valorLiberacao": 1000,
+    "bancoLiberacao": "0001",
+    "agenciaLiberacao": "001",
+    "digitoAgenciaLiberacao": "0",
+    "contaLiberacao": "2828",
+    "digitoContaLiberacao": "0",
+    "tipoConta": "N",
+    "direcionamento": "N",
+    "tipoCredito": "2"
+  }
+]
+```
+</ResponseField>
+
+<Note>A informação de `formaLiberacao` deverá ser sempre 5, pois corresponde ao meio de depósito TED.</Note>
+
+Já com os dados de cadastro do cliente anexados à proposta, será necessário executar o método de finalização de etapas da API de proposta. Neste endpoint, é passado o número da proposta na rota do request.
+
+<ResponseField name="/api/Proposta/01/9791113/Finalizar" type="PUT"></ResponseField>
+<Check>Cadastro da proposta finalizado🎉.</Check>
+
+
+## Integração com a Caixa 
+<Check>Proposta Redirecionada à situação 70 Envio para Reserva FGTS</Check>
+Com a etapa de cadastro concluída, a proposta será encaminhada à Caixa Econômica para a realização da Reserva de Margem do contrato. Não se preocupe, essa é uma etapa automática do nosso sistema.
+
+
+Para acompanhar o status da integração, orientamos que consulte o endpoint Situacao da API de proposta. Nesse endpoint, será informado o status atual da proposta em nosso sistema.
+<ResponseField name="/api/Proposta/01/9791113/Situacao" type="GET"></ResponseField>
+<Warning>Ressaltamos que esse processo e os possíveis retornos do mesmo independem da nossa estrutura.</Warning>
+ 
+### Possíveis retornos da Reserva de margem na Caixa
+<Steps>
+  <Step title="Reserva acatada pela Caixa">
+	Caso a Reserva seja acatada pela Caixa a proposta será redirecionada a situação 21 CAPTURAR BIO E DOCUMENTOS.
+  </Step>
+  <Step title="Reserva Não acatada pela Caixa">
+   Caso a Reserva seja negada pela Caixa, a proposta será redirecionada para    a situação 72, e ao realizar o request no endpoint `Situacao`, será    possível visualizar o motivo da negação da proposta.
+  </Step>
+  <Step title="API da Caixa indisponível">
+Quando houver alguma indisponibilidade ou manutenção sistêmica por parte da Caixa, a proposta será redirecionada para a situação 71 - Aguardando Retorno FGTS. Nessa etapa, nosso sistema, como forma de recorrência, tentará várias vezes de forma automática a reserva de margem do contrato.
+  </Step>
+</Steps>
+
+## Assinatura e Formalização da proposta
+Para dar continuidade à demonstração neste documento, seguiremos o cenário 1 apresentado acima.
+<Check>Proposta na Situação 21 CAPTURAR BIO E DOCUMENTOS. </Check>
+
+Neste momento, realizaremos toda a parte de assinatura digital e formalização do contrato da operação. Para isso, disponibilizamos através da API de proposta um endpoint `/Documento`. Através deste endpoint, deverão ser incluídos os documentos pessoais do cliente, seja CNH ou RG. O documento anexado deverá ser enviado no formato BASE64 no corpo da requisição, sendo necessário informar o `Nome` (nome do documento), `arquivo` (Base64), `Tipo` (sendo 10 para CNH e 06 para RG) e `descricao` (descrição, se houver).
+
+### Request incluir documento
+Veja um exemplo da requisição:
+<ResponseField name="/api/Proposta/01/9791113/Documento" type="POST">
+```
+{
+  "nome": "CNH",
+  "arquivo": SEU BASE64,
+  "tipo": 10,
+  "descricao": "CNH"
+}
+```
+</ResponseField>
+
+Após a execução do método acima, será necessario novamente executar o endpoint de finalização de etapas.
+<ResponseField name="/api/Proposta/01/9791113/Finalizar" type="PUT"></ResponseField>
+<Check>Documento incluído com sucesso.</Check>
+
+### Request enviar Formalização (Assinatura Digital)
+Essa etapa é muito importante, pois é nela que o cliente realizará a assinatura digital do contrato (kit probatório). Este processo é conduzido de forma automática, sob nossa responsabilidade. Para que o cliente tenha acesso ao link para a captura da biometria e assinatura digital, será necessário executar o seguinte endpoint:
+<ResponseField name="/api/Proposta/01/9791113/enviarformalizacao" type="POST">
+```
+{
+  "assinaturaDigital": "S",
+  "ddd": "34",
+  "telefone": "99999999",
+  "email": "oi@zema.com"
+}
+```
+</ResponseField>
+Ao realizar esse request, será enviado ao cliente um SMS e um E-mail contendo o Link para a captura da biometria e a assinatura digital do contrato.
+
+<Warning>Atenção! O telefone e o e-mail informados neste request deverão ser os mesmos informados no cadastro do cliente.</Warning>
 
 
