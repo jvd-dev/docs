@@ -53,7 +53,7 @@
       "group": "Integrações por Produtos",
       "pages": [
         "api-reference/endpoint/FGTS",
-        "api-reference/endpoint/consignado",
+        "api-reference/endpoint/Consignado",
         "api-reference/endpoint/Emprestimo_Pessoal"
       ]
     }
