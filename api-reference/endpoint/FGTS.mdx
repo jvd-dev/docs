@@ -53,7 +53,7 @@ API Simulação FGTS (Homologação): https://fgtshml.zemafinanceira.com:444/sim
 
 <Tip>Vale lembrar que as informações do lojista, loja, produto e plano serão disponibilizadas previamente pelo setor comercial.</Tip>
 
-Com a execução desse request, serão obtidas informações relacionadas ao saldo disponível para a operação, juntamente com detalhes sobre as taxas praticadas. Veja abaixo um exemplo de response:
+Com a execução com suscesso desse request, serão obtidas informações relacionadas ao saldo disponível para a operação, juntamente com detalhes sobre as taxas praticadas. Veja abaixo um exemplo de response:
 <Accordion title="Response Simulação">
 ```
 {
@@ -174,6 +174,43 @@ Com a execução desse request, serão obtidas informações relacionadas ao sal
 ```
 </Accordion>
 
+Veja os possíveis retornos da Caixa:
+<Accordion title="Retornos Caixas">
+```
+
+Erro 400
+4.Número de CPF inválido.
+5.Existe uma Operação Fiduciária em andamento. Tente mais tarde.
+9.Trabalhador não possui adesão ao saque aniversário vigente na data corrente.
+10.Operação não permitida antes de <DD-MM-AAAA>.
+11.Não é possível realizar a operação para o CPF informado.
+12.Trabalhador não possui saldo disponível para Operação Fiduciária.
+13.Operação não permitida por pendência no processo de pagamento de saque-aniversário.
+14.Existe uma solicitação de garantia com o mesmo número identificador.
+15.Trabalhador não possui adesão ao saque aniversário para o período informado.
+16.Uma ou mais datas de previsão do saque informadas não conferem com as previstas no sistema.
+17.Valor da alienação/cessão superior ao valor disponível para o trabalhador.
+18.Trabalhador com solicitação de retorno para saque rescisão, que deve ser cancelada pelo mesmo para possibilitar a solicitação de garantia.
+34.Valor da reserva deve ser maior que zero.
+35.Mudanças cadastrais na conta do FGTS foram realizadas, que impedem a contratação. Entre em contato com o setor de FGTS da CAIXA.
+37.Trabalhador não possui saldo suficiente para a garantia necessária.
+38.Identificador da Solicitação inválido.
+
+Erro 401
+1.Usuário não autenticado.
+
+Erro 403
+6.Instituição Fiduciária sem convênio vigente para a modalidade de Operação Fiduciária.<br /> 7.Instituição Fiduciária não possui autorização para o Trabalhador para Operação Fiduciária.
+
+Erro 404
+8.Trabalhador informado não possui contas de FGTS.
+29.Protocolo não encontrado
+
+Erro 500
+3.Ocorreu um erro inesperado. Tente novamente mais tarde.
+
+```
+</Accordion>
 No caso da simulação demonstrada acima, não foi fornecido o valor da operação. Dessa maneira, o sistema interpreta que o usuário tem a intenção de obter o saldo máximo liberado para o cliente.
 Para adicionar valor na operação, basta adicionar no body a seguinte informação: "valorSolicitado": Valor da operação.
 
